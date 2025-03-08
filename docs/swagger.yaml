@@ -1,4 +1,21 @@
 info:
   contact: {}
-paths: {}
+paths:
+  /api/health:
+    get:
+      consumes:
+      - application/json
+      description: Returns server status
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Health check endpoint
+      tags:
+      - health
 swagger: "2.0"

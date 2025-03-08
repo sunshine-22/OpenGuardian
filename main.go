@@ -2,7 +2,6 @@ package main
 
 import (
 	"log"
-	"openguardian/routes"
 
 	_ "openguardian/docs" // Import generated Swagger docs
 
@@ -10,6 +9,18 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/joho/godotenv"
 )
+
+// HealthCheck godoc
+// @Summary Health check endpoint
+// @Description Returns server status
+// @Tags health
+// @Accept json
+// @Produce json
+// @Success 200 {object} map[string]string
+// @Router /api/health [get]
+func HealthCheck(c *fiber.Ctx) error {
+	return c.JSON(fiber.Map{"status": "ok"})
+}
 
 func main() {
 	// Load environment variables
@@ -28,8 +39,8 @@ func main() {
 
 	app.Use(swagger.New(cfg))
 
-	// Register routes
-	routes.SetupRoutes(app)
+	api := app.Group("/api")
+	api.Get("/health", HealthCheck)
 
 	// Start server
 	port := "3000"
